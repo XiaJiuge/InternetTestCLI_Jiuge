@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using System.Net.NetworkInformation;
@@ -30,20 +30,20 @@ using CliFx.Infrastructure;
 
 namespace InternetTestCLI.Commands;
 
-[Command("ping", Description = "Makes a ping request to a URL.")]
+[Command("ping", Description = "对指定网址进行Ping请求。")]
 public class PingCommand() : ICommand
 {
-    [CommandParameter(0, Name = "site", Description = "Site to ping.")]
+    [CommandParameter(0, Name = "site", Description = "要Ping的站点。")]
     public required string Site { get; init; }
 
-    [CommandOption("amount", 'a', Description = "The number of ping requests to make.", IsRequired = false)]
+    [CommandOption("amount", 'a', Description = "要发送的Ping请求次数。", IsRequired = false)]
     public int Amount { get; init; } = 4;
 
     public async ValueTask ExecuteAsync(IConsole Console)
     {
         try
         {
-            Console.Output.WriteLine($"Pinging {Site}...\n");
+            Console.Output.WriteLine($"正在Ping {Site}...\n");
             int sent = 0, received = 0;
 
             long[] times = new long[Amount]; // Create an array
@@ -54,7 +54,7 @@ public class PingCommand() : ICommand
                 times[i] = ping.RoundtripTime; // Get the time of the ping
 
                 string nl = $"{i + 1}/{Amount}"; // Add a new line if it's not the last ping
-                Console.Output.WriteLine($"{nl}. Pinging: {ping.Address} ({ping.RoundtripTime}ms)");
+                Console.Output.WriteLine($"{nl}. Ping: {ping.Address} ({ping.RoundtripTime}毫秒)");
 
                 if (ping.Status == IPStatus.Success)
                 {
@@ -66,35 +66,35 @@ public class PingCommand() : ICommand
 
             // Get the average, minimum, and maximum of the times and print them
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Output.WriteLine($"Average Time: {times.Average():0.00}ms");
+            Console.Output.WriteLine($"平均时间: {times.Average():0.00}毫秒");
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Output.WriteLine($"Min Time: {times.Min()}ms");
+            Console.Output.WriteLine($"最小时间: {times.Min()}毫秒");
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Output.WriteLine($"Max Time: {times.Max()}ms");
+            Console.Output.WriteLine($"最大时间: {times.Max()}毫秒");
             Console.ResetColor();
 
             Console.Output.WriteLine("");
 
             // Print the number of sent, received, and lost pings
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Output.WriteLine($"Sent: {sent}");
+            Console.Output.WriteLine($"已发送: {sent}");
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Output.WriteLine($"Received: {received}");
+            Console.Output.WriteLine($"已接收: {received}");
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Output.WriteLine($"Lost: {sent - received}");
+            Console.Output.WriteLine($"丢失: {sent - received}");
             Console.ResetColor();
         }
         catch (Exception ex)
         {
-            throw new CommandException(ex.Message);
+            throw new CommandException("发生错误：" + ex.Message);
         }
     }
 }

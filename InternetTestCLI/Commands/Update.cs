@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using CliFx;
@@ -31,35 +31,35 @@ using PeyrSharp.Env;
 
 namespace InternetTestCLI.Commands;
 
-[Command("update", Description = "Checks if a newer version of InternetTest CLI is available.")]
+[Command("update", Description = "检查InternetTest CLI是否有新版本。")]
 public class UpdateCommand() : ICommand
 {
     public async ValueTask ExecuteAsync(IConsole Console)
     {
         try
         {
-            Console.Output.WriteLine($"Checking for updates, please wait...");
+            Console.Output.WriteLine($"正在检查更新，请稍候...");
             string last = await Update.GetLastVersionAsync("https://raw.githubusercontent.com/Leo-Corporation/LeoCorp-Docs/master/Liens/Update%20System/InternetTest/CLI/Version.txt");
             string download = await Update.GetLastVersionAsync("https://raw.githubusercontent.com/Leo-Corporation/LeoCorp-Docs/master/Liens/Update%20System/InternetTest/CLI/Download.txt");
 
             if (Update.IsAvailable(Global.Version, last))
             {
-                Console.Output.WriteLine("Updates are available for InternetTest CLI.");
+                Console.Output.WriteLine("发现新版本可用。");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Output.WriteLine($"\tVersion: {last}");
-                Console.Output.WriteLine($"\tDownload: {download}");
+                Console.Output.WriteLine($"\t版本: {last}");
+                Console.Output.WriteLine($"\t下载地址: {download}");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Output.WriteLine("Everything is update-to-date!");
+                Console.Output.WriteLine("已是最新版本！");
             }
             Console.ResetColor();
 
         }
         catch (Exception ex)
         {
-            throw new CommandException(ex.Message);
+            throw new CommandException("发生错误：" + ex.Message);
         }
     }
 }

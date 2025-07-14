@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 #if _WINDOWS
@@ -36,16 +36,16 @@ using PeyrSharp.Env;
 
 namespace InternetTestCLI.Commands;
 
-[Command("wifi password", Description = "Retrieves your saved WiFi Passwords.")]
+[Command("wifi password", Description = "获取你保存的WiFi密码。")]
 public class WiFiPasswordCommand() : ICommand
 {
-    [CommandOption("name", 'n', Description = "The name of specific network to retrieve.", IsRequired = false)]
+    [CommandOption("name", 'n', Description = "要查询的网络名称。", IsRequired = false)]
     public string Name { get; init; } = "";
     public async ValueTask ExecuteAsync(IConsole Console)
     {
         try
         {
-            Console.Output.WriteLine($"Retrieving your WiFi Passwords, please wait...\n");
+            Console.Output.WriteLine($"正在获取你的WiFi密码，请稍候...\n");
 
             await GetWiFiNetworksInfo();
             LoadWiFiInfo(FileSys.AppDataPath + @"\LÃ©o Corporation\InternetTest CLI\WiFis", Name);
@@ -53,7 +53,7 @@ public class WiFiPasswordCommand() : ICommand
         }
         catch (Exception ex)
         {
-            throw new CommandException(ex.Message);
+            throw new CommandException("发生错误：" + ex.Message);
         }
     }
 

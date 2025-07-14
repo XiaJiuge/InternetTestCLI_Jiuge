@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 
@@ -38,30 +38,30 @@ using System.Drawing;
 
 namespace InternetTestCLI.Commands;
 
-[Command("dns", Description = "Gets DNS informations about a domain name.")]
+[Command("dns", Description = "获取域名的DNS信息。")]
 public class DnsCommand() : ICommand
 {
-	[CommandParameter(0, Name = "site", Description = "Site URL.")]
+	[CommandParameter(0, Name = "site", Description = "网站URL。")]
 	public required string Site { get; init; }
 
-	[CommandOption("advanced", 'a', Description = "Display all information for Whois.", IsRequired = false)]
+	[CommandOption("advanced", 'a', Description = "显示Whois的所有信息。", IsRequired = false)]
 	public bool Advanced { get; init; } = false;
 
-	[CommandOption("record-types", 'r', Description = "Only display the provided record types.", IsRequired = false)]
+	[CommandOption("record-types", 'r', Description = "仅显示指定的记录类型。", IsRequired = false)]
 	public DnsClient.Protocol.ResourceRecordType[] RecordTypes { get; init; }
 
 	public async ValueTask ExecuteAsync(IConsole Console)
 	{
 		try
 		{
-			Console.Output.WriteLine($"Fetching DNS information for {Site}, please wait...");
+			Console.Output.WriteLine($"正在获取 {Site} 的DNS信息，请稍候...");
 
 			GetDnsInfo(Site);
 
 		}
 		catch (Exception ex)
 		{
-			throw new CommandException(ex.Message);
+			throw new CommandException("发生错误：" + ex.Message);
 		}
 	}
 
@@ -75,13 +75,13 @@ public class DnsCommand() : ICommand
 		IPHostEntry host = Dns.GetHostEntry(website);
 		IPAddress ip = host.AddressList[0];
 
-		Console.WriteLine($"IP Address: {ip}");
+		Console.WriteLine($"IP地址: {ip}");
 		Console.WriteLine("");
 
 		// Get DNS records
 		Console.ForegroundColor = ConsoleColor.Cyan;
-		Console.WriteLine($"DNS Records");
-		Console.WriteLine($"===========");
+		Console.WriteLine($"DNS记录");
+		Console.WriteLine($"==========");
 		Console.ResetColor();
 		var lookup = new LookupClient();
 		var result = lookup.QueryAsync(website, QueryType.ANY).Result;
@@ -94,8 +94,8 @@ public class DnsCommand() : ICommand
 		// Display WHOIS
 		Console.WriteLine("");
 		Console.ForegroundColor = ConsoleColor.Cyan;
-		Console.WriteLine($"WHOIS");
-		Console.WriteLine($"=====");
+		Console.WriteLine($"WHOIS信息");
+		Console.WriteLine($"========");
 		Console.ResetColor();
 
 		if (Advanced)
@@ -104,9 +104,9 @@ public class DnsCommand() : ICommand
 		}
 		else
 		{
-			Console.WriteLine($"Creation: {response.Registered}");
-			Console.WriteLine($"Expires: {response.Expiration}");
-			Console.WriteLine($"Status:\n\t{string.Join("\n\t", response.DomainStatus)}");
+			Console.WriteLine($"注册时间: {response.Registered}");
+			Console.WriteLine($"到期时间: {response.Expiration}");
+			Console.WriteLine($"状态:\n\t{string.Join("\n\t", response.DomainStatus)}");
 			string regInfo = "";
 			foreach (var prop in response.Registrant.GetType().GetProperties())
 			{
@@ -114,7 +114,7 @@ public class DnsCommand() : ICommand
 				if (val is null || prop.Name == "Address") continue;
 				regInfo += $"\t{prop.Name} - {val}\n";
 			}
-			Console.WriteLine("Registrant Information:");
+			Console.WriteLine("注册人信息:");
 			Console.WriteLine(regInfo);
 		}
 
@@ -123,10 +123,10 @@ public class DnsCommand() : ICommand
 }
 
 #if _WINDOWS
-[Command("dns cache", Description = "Gets the DNS cache.")]
+[Command("dns cache", Description = "获取DNS缓存。")]
 public class DnsCacheCommand() : ICommand
 {
-	[CommandOption("clear", 'c', Description = "Clears the DNS cache.", IsRequired = false)]
+	[CommandOption("clear", 'c', Description = "清除DNS缓存。", IsRequired = false)]
 	public bool Clear { get; init; } = false;
 	public async ValueTask ExecuteAsync(IConsole Console)
 	{
@@ -134,17 +134,17 @@ public class DnsCacheCommand() : ICommand
 		if (Clear)
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.Output.WriteLine("Are you sure you want to clear the DNS cache? (y/n): ");
+			Console.Output.WriteLine("确定要清除DNS缓存吗？(y/n): ");
 			var key = Console.ReadKey().Key;
 			if (key != ConsoleKey.Y)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.Output.WriteLine("\nOperation cancelled.");
+				Console.Output.WriteLine("\n操作已取消。");
 				Console.ResetColor();
 				return;
 			}
 
-			Console.Output.WriteLine("\nClearing DNS cache, please wait...");
+			Console.Output.WriteLine("\n正在清除DNS缓存，请稍候...");
 			ProcessStartInfo processInfo = new()
 			{
 				FileName = "ipconfig",
@@ -163,14 +163,14 @@ public class DnsCacheCommand() : ICommand
 			// Wait for the process to exit
 			process.WaitForExit();
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.Output.WriteLine("DNS cache cleared successfully.");
+			Console.Output.WriteLine("DNS缓存已成功清除。");
 			Console.ResetColor();
 		}
 
 		try
 		{
 			Console.ForegroundColor = ConsoleColor.Cyan;
-			Console.Output.WriteLine("Fetching DNS cache, please wait...");
+			Console.Output.WriteLine("正在获取DNS缓存，请稍候...");
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
 			var cache = await GetDnsCache();
@@ -179,11 +179,11 @@ public class DnsCacheCommand() : ICommand
 			{
 				// Define the headers with alignment for each column
 				ColumnHeader[] headers = [
-					new ColumnHeader("Entry", Alignment.Left),
-					new ColumnHeader("Record Name", Alignment.Left),
-					new ColumnHeader("Type", Alignment.Center),
-					new ColumnHeader("Status", Alignment.Center),
-					new ColumnHeader("Data", Alignment.Left)
+					new ColumnHeader("条目", Alignment.Left),
+					new ColumnHeader("记录名", Alignment.Left),
+					new ColumnHeader("类型", Alignment.Center),
+					new ColumnHeader("状态", Alignment.Center),
+					new ColumnHeader("数据", Alignment.Left)
 				];
 
 				// Initialize the table with the headers
@@ -192,19 +192,16 @@ public class DnsCacheCommand() : ICommand
 					Config = TableConfiguration.MySqlSimple() // Simple MySQL-style table formatting
 				};
 
-				// Define a function to format the "Status" column based on its value
-				
-
 				// Add rows to the table
 				foreach (var item in cache)
 				{
 					if (item is null) continue;
 
 					table.AddRow(
-						item.Entry ?? "",                             
-						item.Name ?? "",                           
+						item.Entry ?? "",
+						item.Name ?? "",
 						(Types)item.Type,
-						(Status)item.Status,       
+						(Status)item.Status,
 						item.Data ?? ""
 					);
 				}
@@ -216,7 +213,7 @@ public class DnsCacheCommand() : ICommand
 		}
 		catch (Exception ex)
 		{
-			throw new CommandException(ex.Message + ex.StackTrace + ex.InnerException + ex.Source);
+			throw new CommandException("发生错误：" + ex.Message + ex.StackTrace + ex.InnerException + ex.Source);
 		}
 	}
 	public static async Task<DnsCacheInfo[]> GetDnsCache()

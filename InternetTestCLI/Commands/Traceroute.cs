@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using System.Net.NetworkInformation;
@@ -31,13 +31,13 @@ using InternetTestCLI.Classes;
 
 namespace InternetTestCLI.Commands;
 
-[Command("trace", Description = "Executes a traceroute for a provided website.")]
+[Command("trace", Description = "对指定网站执行路由追踪。")]
 public class TracerouteCommand() : ICommand
 {
-    [CommandParameter(0, Name = "site", Description = "Site URL.")]
+    [CommandParameter(0, Name = "site", Description = "网站URL。")]
     public required string Site { get; init; }
 
-    [CommandParameter(1, Name = "max_hops", Description = "The maximum amount of hops.", IsRequired = false)]
+    [CommandParameter(1, Name = "max_hops", Description = "最大跳数。", IsRequired = false)]
     public int MaxHops { get; init; } = 30;
 
 
@@ -46,7 +46,7 @@ public class TracerouteCommand() : ICommand
     {
         try
         {
-            Console.Output.WriteLine($"Traceroute in progress for {Site}, please wait...");
+            Console.Output.WriteLine($"正在对 {Site} 进行路由追踪，请稍候...");
 
             int success = 0; int failed = 0; long time = 0;
             var route = await Trace(Site, MaxHops, 5000);
@@ -59,21 +59,21 @@ public class TracerouteCommand() : ICommand
                 time += route[i].RoundtripTime;
             }
 
-            Console.Output.WriteLine("Overview");
-            Console.Output.WriteLine("========\n");
+            Console.Output.WriteLine("概览");
+            Console.Output.WriteLine("====\n");
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Output.WriteLine($"Success: {success}");
+            Console.Output.WriteLine($"成功: {success}");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Output.WriteLine($"Failed: {failed}");
+            Console.Output.WriteLine($"失败: {failed}");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Output.WriteLine($"Time: {time}ms");
+            Console.Output.WriteLine($"总耗时: {time}毫秒");
             Console.ResetColor();
 
         }
         catch (Exception ex)
         {
-            throw new CommandException(ex.Message);
+            throw new CommandException("发生错误：" + ex.Message);
         }
     }
 

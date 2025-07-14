@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 using System.Net.NetworkInformation;
 
@@ -35,11 +35,11 @@ public record WindowsIpConfig(
     OperationalStatus? Status)
 {
     public override string ToString() =>
-        $"IPv4 Address: {IPv4Address}\n" +
-        $"Subnet Mask: {IPv4Mask}\n" +
-        $"Gateway IPv4: {IPv4Gateway ?? "None"}\n" +
-        $"IPv6 Address: {IPv6Address}\n" +
-        $"Gateway IPv6: {IPv6Gateway ?? "None"}\n" +
-        $"DNS Suffix: {DNSSuffix ?? "None"}\n" +
-        $"Status: {(Status == OperationalStatus.Up ? "Connected" : "Disconnected")}";
+        $"IPv4地址: {IPv4Address}\n" +
+        $"子网掩码: {IPv4Mask}\n" +
+        $"IPv4网关: {IPv4Gateway ?? "无"}\n" +
+        $"IPv6地址: {IPv6Address}\n" +
+        $"IPv6网关: {IPv6Gateway ?? "无"}\n" +
+        $"DNS后缀: {DNSSuffix ?? "无"}\n" +
+        $"状态: {(Status == OperationalStatus.Up ? "已连接" : "未连接")}";
 }

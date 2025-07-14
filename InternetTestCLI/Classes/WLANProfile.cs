@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 using System.Xml.Serialization;
 
@@ -105,9 +105,9 @@ public class WLANProfile
 	public MSM? MSM { get; set; }
 
 	public override string ToString() =>
-		$"Authentication: {MSM?.Security?.AuthEncryption?.Authentication}\n" +
-		$"Key: {MSM?.Security?.SharedKey?.KeyMaterial}\n" +
-		$"Encryption: {MSM?.Security?.AuthEncryption?.Encryption}\n" +
-		$"Connection Mode: {(ConnectionMode == "auto" ? "Automatic" : ConnectionMode)}\n" +
-		$"Connection Type: {ConnectionType switch { "ESS" => "Infrastructure Network", "IBSS" => "AdHoc Network", _ => ConnectionType }}";
+		$"认证方式: {MSM?.Security?.AuthEncryption?.Authentication}\n" +
+		$"密钥: {MSM?.Security?.SharedKey?.KeyMaterial}\n" +
+		$"加密方式: {MSM?.Security?.AuthEncryption?.Encryption}\n" +
+		$"连接模式: {(ConnectionMode == "auto" ? "自动" : ConnectionMode)}\n" +
+		$"连接类型: {ConnectionType switch { "ESS" => "基础设施网络", "IBSS" => "AdHoc网络", _ => ConnectionType }}";
 }

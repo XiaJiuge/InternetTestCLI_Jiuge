@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using System.Net.NetworkInformation;
@@ -33,45 +33,45 @@ using InternetTestCLI.Enums;
 
 namespace InternetTestCLI.Commands;
 
-[Command("ip", Description = "Retrieves information about your public IP address.")]
+[Command("ip", Description = "获取你的公网IP信息。")]
 public class MyIpCommand() : ICommand
 {
 	public async ValueTask ExecuteAsync(IConsole Console)
 	{
 		try
 		{
-			Console.Output.WriteLine($"Getting information for your public IP, please wait...");
+			Console.Output.WriteLine($"正在获取你的公网IP信息，请稍候...");
 			var ip = await IPInfo.GetIPInfoAsync("");
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.Output.WriteLine($"Your public IP address is {ip.Query}");
+			Console.Output.WriteLine($"你的公网IP地址是 {ip.Query}");
 			Console.ResetColor();
 			Console.Output.WriteLine("");
 
-			Console.Output.WriteLine($"Detailed information\n");
+			Console.Output.WriteLine($"详细信息\n");
 			Console.Output.WriteLine(ip.ToString());
 		}
 		catch (Exception ex)
 		{
-			throw new CommandException(ex.Message);
+			throw new CommandException("发生错误：" + ex.Message);
 		}
 	}
 }
 
-[Command("ip locate", Description = "Retrieves information about an IP address with its position.")]
+[Command("ip locate", Description = "获取指定IP的地理位置信息。")]
 public class LocateIpCommand() : ICommand
 {
-	[CommandParameter(0, Name = "ip", Description = "The IP address to locate.")]
+	[CommandParameter(0, Name = "ip", Description = "要定位的IP地址。")]
 
 	public required string IP { get; init; }
 
-	[CommandOption("map", 'm', Description = "Only shows the link to see the approximate location on a map.", IsRequired = false)]
+	[CommandOption("map", 'm', Description = "仅显示地图链接。", IsRequired = false)]
 	public bool Map { get; init; } = false;
 
-	[CommandOption("provider", 'p', Description = "The map provider to use.", IsRequired = false)]
+	[CommandOption("provider", 'p', Description = "要使用的地图服务商。", IsRequired = false)]
 	public MapProvider Provider { get; init; } = MapProvider.OpenStreetMap;
 
-	[CommandOption("zoom", 'z', Description = "The zoom level of the map.", IsRequired = false)]
+	[CommandOption("zoom", 'z', Description = "地图缩放级别。", IsRequired = false)]
 	public int Zoom { get; init; } = 12;
 
 	public async ValueTask ExecuteAsync(IConsole Console)
@@ -79,17 +79,17 @@ public class LocateIpCommand() : ICommand
 
 		try
 		{
-			Console.Output.WriteLine($"Getting information for the requested IP, please wait...");
+			Console.Output.WriteLine($"正在获取指定IP的信息，请稍候...");
 			var ip = await IPInfo.GetIPInfoAsync(IP);
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.Output.WriteLine($"IP address is {ip.Query}");
+			Console.Output.WriteLine($"IP地址为 {ip.Query}");
 			Console.ResetColor();
 			Console.Output.WriteLine("");
 
 			if (Map)
 			{
-				Console.Output.WriteLine("Map link:");
+				Console.Output.WriteLine("地图链接:");
 				Console.ForegroundColor = ConsoleColor.Cyan;
 				var lat = ip.Lat.ToString().Replace(",", "."); var lon = ip.Lon.ToString().Replace(",", ".");
 
@@ -98,13 +98,13 @@ public class LocateIpCommand() : ICommand
 			}
 			else
 			{
-				Console.Output.WriteLine($"Detailed information\n");
+				Console.Output.WriteLine($"详细信息\n");
 				Console.Output.WriteLine(ip.ToString());
 			}
 		}
 		catch (Exception ex)
 		{
-			throw new CommandException(ex.Message);
+			throw new CommandException("发生错误：" + ex.Message);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class LocateIpCommand() : ICommand
 	}
 }
 
-[Command("ip config", Description = "Retrieves information about your IP Config.")]
+[Command("ip config", Description = "获取你的IP配置信息。")]
 public class IpConfigCommand() : ICommand
 {
 	public async ValueTask ExecuteAsync(IConsole Console)
@@ -182,7 +182,7 @@ public class IpConfigCommand() : ICommand
 		}
 		catch (Exception ex)
 		{
-			throw new CommandException(ex.Message);
+			throw new CommandException("发生错误：" + ex.Message);
 		}
 	}
 }

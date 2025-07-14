@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using CliFx;
@@ -31,13 +31,13 @@ using System;
 
 namespace InternetTestCLI.Commands;
 
-[Command("downdetector", Description = "Checks if a website is down.")]
+[Command("downdetector", Description = "检测网站是否无法访问。")]
 public class DownDetectorTestCommand() : ICommand
 {
-	[CommandParameter(0, Name = "sites", Description = "Site URLs.", IsRequired = false)]
+	[CommandParameter(0, Name = "sites", Description = "网站URL。", IsRequired = false)]
 	public string[] Sites { get; init; } = [];
 
-	[CommandOption("filepath", 'f', Description = "Add this flag to specify to InternetTest CLI that you provided a file instead of a list of URLs.", IsRequired = false)]
+	[CommandOption("filepath", 'f', Description = "指定你提供的是文件而不是URL列表。", IsRequired = false)]
 	public bool FilePath { get; init; } = false;
 
 	public async ValueTask ExecuteAsync(IConsole Console)
@@ -56,10 +56,10 @@ public class DownDetectorTestCommand() : ICommand
 				if (!(url.Contains("https://") || url.Contains("http://")))
 				{
 					Console.ForegroundColor = ConsoleColor.Yellow;
-					Console.Output.WriteLine("The protocol was not specified, assuming that it is HTTPS.");
+					Console.Output.WriteLine("未指定协议，默认使用HTTPS。");
 					url = "https://" + url;
 				}
-				Console.Output.WriteLine($"Test in progress for {url}, please wait...");
+				Console.Output.WriteLine($"正在测试 {url}，请稍候...");
 
 				Console.ForegroundColor = ConsoleColor.Cyan;
 				Console.Output.WriteLine($"\n{url}");
@@ -77,15 +77,15 @@ public class DownDetectorTestCommand() : ICommand
 					_ => Console.ForegroundColor,// Keep the default color for unexpected values
 				};
 				// Load Information
-				Console.Output.Write("Status Code: "); Console.ForegroundColor = color; Console.Output.Write(statusInfo.StatusCode); Console.ResetColor();
+				Console.Output.Write("状态码: "); Console.ForegroundColor = color; Console.Output.Write(statusInfo.StatusCode); Console.ResetColor();
 				Console.Output.WriteLine("");
-				Console.Output.WriteLine($"Status Type: {statusInfo.StatusType}");
-				Console.Output.Write($"Status Message: "); Console.ForegroundColor = color; Console.Output.Write(statusInfo.StatusDescription + "\n"); Console.ResetColor();
+				Console.Output.WriteLine($"状态类型: {statusInfo.StatusType}");
+				Console.Output.Write($"状态描述: "); Console.ForegroundColor = color; Console.Output.Write(statusInfo.StatusDescription + "\n"); Console.ResetColor();
 			}
 		}
 		catch (Exception ex)
 		{
-			throw new CommandException(ex.Message);
+			throw new CommandException("发生错误：" + ex.Message);
 		}
 	}
 }

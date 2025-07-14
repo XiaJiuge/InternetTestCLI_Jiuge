@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using System.Text.Json;
@@ -112,14 +112,14 @@ public class IPInfo
 
     public override string ToString()
     {
-        return $"Country: {Country}\n" +
-            $"Region: {RegionName}\n" +
-            $"City: {City}\n" +
-            $"ZIP Code: {Zip}\n" +
-            $"Latitude: {Lat}\n" +
-            $"Longitude: {Lon}\n" +
-            $"Timezone: {TimeZone}\n" +
-            $"ISP: {ISP}\n";
+        return $"国家: {Country}\n" +
+            $"地区: {RegionName}\n" +
+            $"城市: {City}\n" +
+            $"邮编: {Zip}\n" +
+            $"纬度: {Lat}\n" +
+            $"经度: {Lon}\n" +
+            $"时区: {TimeZone}\n" +
+            $"运营商: {ISP}\n";
     }
 
     public async static Task<IPInfo?> GetIPInfoAsync(string ip)

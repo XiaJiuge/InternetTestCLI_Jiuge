@@ -19,7 +19,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+SOFTWARE.
 */
 
 using CliFx;
@@ -30,30 +30,30 @@ using RestSharp;
 
 namespace InternetTestCLI.Commands;
 
-[Command("request", Description = "Makes a request to the specified resource.")]
+[Command("request", Description = "对指定资源发起请求。")]
 public class RequestCommand() : ICommand
 {
-    [CommandParameter(0, Name = "method", Description = "The method to use when executing the request.")]
+    [CommandParameter(0, Name = "method", Description = "请求方法。")]
     public required Method Method { get; init; } = Method.Get;
 
-    [CommandParameter(1, Name = "url", Description = "The URL where to send the request.")]
+    [CommandParameter(1, Name = "url", Description = "请求的URL地址。")]
     public required string URL { get; init; }
 
-    [CommandOption("content", 'c', Description = "Only outputs the content of the response.", IsRequired = false)]
+    [CommandOption("content", 'c', Description = "只输出响应内容。", IsRequired = false)]
     public bool ContentOnly { get; init; } = false;
 
     public async ValueTask ExecuteAsync(IConsole Console)
     {
         try
         {
-            if (!ContentOnly) Console.Output.WriteLine($"Executing a {Method} request for {URL}, please wait...");
+            if (!ContentOnly) Console.Output.WriteLine($"正在对 {URL} 执行 {Method} 请求，请稍候...");
             await ExecuteRequest(Method, URL);
 
 
         }
         catch (Exception ex)
         {
-            throw new CommandException(ex.Message);
+            throw new CommandException("发生错误：" + ex.Message);
         }
     }
 
@@ -67,8 +67,8 @@ public class RequestCommand() : ICommand
         if (!ContentOnly)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\nResponse Content");
-            Console.WriteLine("================\n");
+            Console.WriteLine("\n响应内容");
+            Console.WriteLine("========\n");
             Console.ResetColor();
         }
         Console.WriteLine(response.Content);
@@ -77,8 +77,8 @@ public class RequestCommand() : ICommand
 
         string headers = "";
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("\nHeaders");
-        Console.WriteLine("=======\n");
+        Console.WriteLine("\n响应头");
+        Console.WriteLine("======\n");
 
         foreach (var item in response.Headers)
         {
@@ -94,8 +94,8 @@ public class RequestCommand() : ICommand
         }
 
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("\nStatus");
-        Console.WriteLine("======\n");
+        Console.WriteLine("\n状态");
+        Console.WriteLine("====\n");
         Console.ResetColor();
 
 
@@ -110,9 +110,9 @@ public class RequestCommand() : ICommand
         };
 
 
-        Console.Write("Status Code: "); Console.ForegroundColor = color; Console.Write((int)response.StatusCode); Console.ResetColor();
+        Console.Write("状态码: "); Console.ForegroundColor = color; Console.Write((int)response.StatusCode); Console.ResetColor();
         Console.WriteLine("");
-        Console.Write($"Status Message: "); Console.ForegroundColor = color; Console.Write(response.StatusDescription + "\n"); Console.ResetColor();
+        Console.Write($"状态描述: "); Console.ForegroundColor = color; Console.Write(response.StatusDescription + "\n"); Console.ResetColor();
 
     }
 }
